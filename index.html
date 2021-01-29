@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <title>Todo App</title>
+
+    <style>
+        .doneStyle{
+            text-decoration: line-through;
+            
+        }
+    </style>
+</head>
+<body>
+    <div id=app> 
+        <input type="text" placeholder="Todo giriniz" v-model="inputTodo" @keyup.enter="addTodo()">
+        <button @click="addTodo()">Ekle</button>
+        
+        <hr>
+        <div v-for="(todo,index) in todos">
+            
+            <ul>
+                <li>
+                    <!-- <span :class="{'done':todo.done}">{{todo.text}}</span> -->
+                    <span :class="{'doneStyle': todo.done}" >{{todo.text}}</span>
+                         
+                    <!-- js key value tutarak yapılır, hangi class vermek istiyorum (doneStyle) : done dersem, done'ın değeri true olursa gösterir
+                        butona tıklatınca def false değeri true olur ve doneStyle classını ekler.
+                    -->
+                         
+                    <button @click="todo.done=!todo.done">done</button>
+                    <button @click="remove(index)">delete</button>
+                    
+                </li>
+            </ul>
+        </div>
+        <p v-if="!todos.length" >there is not any todo.</p>
+        <hr>
+        
+    </div>
+    
+
+
+    <script>
+        new Vue ({
+            el:"#app",
+            data:{
+                inputTodo:"",
+                todos:[],
+            },
+            methods:{
+                addTodo(inputData){
+                    var newTodo=this.inputTodo.trim();
+                    if(!newTodo){
+                        return;
+                    }
+                    this.todos.push({text:newTodo,done:false});
+                    this.inputTodo="";
+                    
+                },
+                remove(index){
+                    this.$delete(this.todos, index)
+    
+                },
+            },
+            
+        })
+    
+    </script>
+</body>
+</html>
